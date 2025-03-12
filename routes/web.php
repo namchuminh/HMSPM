@@ -1,0 +1,62 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\LoanController;
+use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\AuthController;
+
+
+Route::get('/login', [AuthController::class, 'index'])->name('login');
+Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+
+
+// Middleware bảo vệ các route cần đăng nhập
+Route::middleware(['auth.middleware'])->group(function () {
+
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    
+    // Quản lý sản phẩm
+    Route::prefix('products')->name('products.')->group(function () {
+        Route::get('/', [ProductController::class, 'index'])->name('index'); // Danh sách sản phẩm
+        Route::get('/create', [ProductController::class, 'create'])->name('create'); // Form thêm sản phẩm
+        Route::post('/store', [ProductController::class, 'store'])->name('store'); // Lưu sản phẩm mới
+        Route::get('/{id}/edit', [ProductController::class, 'edit'])->name('edit'); // Chỉnh sửa sản phẩm
+        Route::put('/{id}/update', [ProductController::class, 'update'])->name('update'); // Cập nhật sản phẩm
+        Route::delete('/{id}/delete', [ProductController::class, 'destroy'])->name('destroy'); // Xóa sản phẩm
+    });
+
+    // Quản lý nhập kho
+    Route::prefix('inventory')->name('inventory.')->group(function () {
+        Route::get('/', [InventoryController::class, 'index'])->name('index');
+        Route::get('/create', [InventoryController::class, 'create'])->name('create');
+        Route::post('/store', [InventoryController::class, 'store'])->name('store');
+        Route::get('/{id}/edit', [InventoryController::class, 'edit'])->name('edit');
+        Route::put('/{id}/update', [InventoryController::class, 'update'])->name('update'); // Cập nhật sản phẩm
+        Route::delete('/{id}/delete', [InventoryController::class, 'destroy'])->name('destroy'); // Xóa sản phẩm
+    });
+
+    // Quản lý mượn – thu hồi sản phẩm
+    Route::prefix('loans')->name('loans.')->group(function () {
+        Route::get('/', [LoanController::class, 'index'])->name('index');
+        Route::post('/borrow', [LoanController::class, 'borrow'])->name('borrow');
+        Route::post('/return/{id}', [LoanController::class, 'return'])->name('return');
+    });
+
+    // Lịch sử giao dịch
+    Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
+
+    // Báo cáo
+    Route::prefix('reports')->name('reports.')->group(function () {
+        Route::get('/', [ReportController::class, 'index'])->name('index');
+        Route::get('/generate', [ReportController::class, 'generate'])->name('generate');
+    });
+
+    // Quản lý thông báo
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+});
