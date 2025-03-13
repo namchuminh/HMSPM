@@ -70,4 +70,7 @@ Route::middleware(['auth.middleware'])->group(function () {
 
     // Quản lý thông báo
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+
+    Route::get('/profile', [UserController::class, 'profile'])->name('users.profile');
+    Route::post('/profile', [UserController::class, 'profileUpdate'])->name('users.profileUpdate');
 });

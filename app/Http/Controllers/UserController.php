@@ -214,4 +214,64 @@ class UserController extends Controller
         return redirect()->route('users.index')->with('success', 'Người dùng đã bị xóa.');
     }
 
+    public function profile()
+    {
+        $user = auth()->user(); // Lấy thông tin người dùng đang đăng nhập
+        return view('profile.index', compact('user'));
+    }
+
+    public function profileUpdate(Request $request)
+    {
+        $user = auth()->user(); // Lấy người dùng hiện tại
+
+        // Validate dữ liệu
+        $request->validate([
+            'name' => 'required|max:255',
+            'phone' => 'required|max:15|unique:users,phone,' . $user->id,
+            'current_password' => 'nullable|min:4',
+            'new_password' => 'nullable|min:4|required_with:current_password',
+            'confirm_password' => 'nullable|min:4|same:new_password',
+            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
+        ], [
+            'name.required' => 'Vui lòng nhập họ tên.',
+            'name.max' => 'Họ tên không được vượt quá 255 ký tự.',
+            'phone.required' => 'Vui lòng nhập số điện thoại.',
+            'phone.max' => 'Số điện thoại không quá 15 ký tự.',
+            'phone.unique' => 'Số điện thoại đã tồn tại.',
+            'current_password.min' => 'Mật khẩu hiện tại phải có ít nhất 4 ký tự.',
+            'new_password.min' => 'Mật khẩu mới phải có ít nhất 4 ký tự.',
+            'new_password.required_with' => 'Bạn phải nhập mật khẩu hiện tại để đổi mật khẩu mới.',
+            'confirm_password.same' => 'Xác nhận mật khẩu không khớp với mật khẩu mới.',
+            'avatar.image' => 'Ảnh đại diện phải là file ảnh.',
+            'avatar.mimes' => 'Ảnh đại diện chỉ chấp nhận các định dạng: jpeg, png, jpg, gif.',
+            'avatar.max' => 'Ảnh đại diện không được lớn hơn 10MB.'
+        ]);
+
+        // Xử lý avatar nếu có upload
+        if ($request->hasFile('avatar')) {
+            if ($user->avatar) {
+                Storage::disk('public')->delete($user->avatar);
+            }
+            $avatarPath = $request->file('avatar')->store('avatars', 'public');
+            $user->avatar = $avatarPath;
+        }
+
+        // Kiểm tra mật khẩu hiện tại và cập nhật nếu có nhập
+        if ($request->current_password) {
+            if (!Hash::check($request->current_password, $user->password)) {
+                return redirect()->route('users.profile')->with('error', 'Mật khẩu hiện tại không chính xác.');
+            }
+
+            $user->password = Hash::make($request->new_password);
+        }
+
+        // Cập nhật thông tin
+        $user->name = $request->name;
+        $user->phone = $request->phone;
+        $user->save();
+
+        return redirect()->route('users.profile')->with('success', 'Thông tin cá nhân đã được cập nhật.');
+    }
+
+
 }

@@ -33,25 +33,25 @@
 
                             <div class="form-group">
                                 <label>Họ Tên</label>
-                                <input type="text" class="form-control" name="name" value="{{ old('name') }}" required>
+                                <input type="text" class="form-control" name="name" value="{{ old('name') }}" placeholder="Nhập họ tên" required>
                                 @error('name') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
 
                             <div class="form-group">
                                 <label>Email</label>
-                                <input type="email" class="form-control" name="email" value="{{ old('email') }}" required>
+                                <input type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="Nhập email" required>
                                 @error('email') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
 
                             <div class="form-group">
                                 <label>Số Điện Thoại</label>
-                                <input type="text" class="form-control" name="phone" value="{{ old('phone') }}" required>
+                                <input type="text" class="form-control" name="phone" value="{{ old('phone') }}" placeholder="Nhập số điện thoại" required>
                                 @error('phone') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
 
                             <div class="form-group">
                                 <label>Mật Khẩu</label>
-                                <input type="password" class="form-control" name="password" required>
+                                <input type="password" class="form-control" name="password" placeholder="Tạo mật khẩu" required>
                                 @error('password') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
 

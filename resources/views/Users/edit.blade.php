@@ -34,25 +34,25 @@
 
                             <div class="form-group">
                                 <label>Họ Tên</label>
-                                <input type="text" class="form-control" name="name" value="{{ old('name', $user->name) }}" required>
+                                <input type="text" class="form-control" placeholder="Nhập họ tên" name="name" value="{{ old('name', $user->name) }}" required>
                                 @error('name') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
 
                             <div class="form-group">
                                 <label>Email</label>
-                                <input type="email" class="form-control" name="email" value="{{ old('email', $user->email) }}" required>
+                                <input type="email" class="form-control" placeholder="Nhập email" name="email" value="{{ old('email', $user->email) }}" required>
                                 @error('email') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
 
                             <div class="form-group">
                                 <label>Số Điện Thoại</label>
-                                <input type="text" class="form-control" name="phone" value="{{ old('phone', $user->phone) }}" required>
+                                <input type="text" class="form-control" placeholder="Nhập số điện thoại" name="phone" value="{{ old('phone', $user->phone) }}" required>
                                 @error('phone') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
 
                             <div class="form-group">
                                 <label>Mật Khẩu (Để trống nếu không muốn đổi)</label>
-                                <input type="password" class="form-control" name="password">
+                                <input type="password" class="form-control" placeholder="Mật khẩu mới" name="password">
                                 @error('password') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
 
