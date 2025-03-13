@@ -72,13 +72,11 @@ class ProductController extends Controller
             'expired_quantity' => 'required|integer|min:0',
             'damaged_quantity' => 'required|integer|min:0',
             'borrowed_quantity' => 'required|integer|min:0',
-            'status' => 'required|in:new,used,damaged,expired',
         ], [
             'code.required' => 'Mã sản phẩm không được để trống.',
             'code.unique' => 'Mã sản phẩm đã tồn tại.',
             'name.required' => 'Tên sản phẩm không được để trống.',
             'quantity.required' => 'Số lượng không được để trống.',
-            'status.required' => 'Trạng thái sản phẩm không hợp lệ.',
         ]);
 
         // Lưu sản phẩm vào database
@@ -111,7 +109,6 @@ class ProductController extends Controller
             'expired_quantity' => 'required|integer|min:0',
             'damaged_quantity' => 'required|integer|min:0',
             'borrowed_quantity' => 'required|integer|min:0',
-            'status' => 'required|in:new,used,damaged,expired'
         ], [
             'code.required' => 'Mã sản phẩm không được để trống.',
             'code.unique' => 'Mã sản phẩm đã tồn tại.',
@@ -130,14 +127,12 @@ class ProductController extends Controller
             'damaged_quantity.min' => 'Số lượng hư hỏng không được nhỏ hơn 0.',
             'borrowed_quantity.required' => 'Số lượng đang mượn không được để trống.',
             'borrowed_quantity.integer' => 'Số lượng đang mượn phải là số nguyên.',
-            'borrowed_quantity.min' => 'Số lượng đang mượn không được nhỏ hơn 0.',
-            'status.required' => 'Trạng thái sản phẩm không được để trống.',
-            'status.in' => 'Trạng thái sản phẩm không hợp lệ.'
+            'borrowed_quantity.min' => 'Số lượng đang mượn không được nhỏ hơn 0.'
         ]);
 
         $product->update($request->all());
 
-        return redirect()->route('products.index')->with('success', 'Sản phẩm đã được cập nhật.');
+        return redirect()->route('products.edit', $id)->with('success', 'Sản phẩm đã được cập nhật.');
     }
 
     /**

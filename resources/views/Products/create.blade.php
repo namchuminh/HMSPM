@@ -72,17 +72,6 @@
                                 @error('borrowed_quantity') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
 
-                            <div class="form-group">
-                                <label>Trạng Thái</label>
-                                <select name="status" class="form-control">
-                                    <option value="new" {{ old('status') == 'new' ? 'selected' : '' }}>Mới</option>
-                                    <option value="used" {{ old('status') == 'used' ? 'selected' : '' }}>Đã qua sử dụng</option>
-                                    <option value="damaged" {{ old('status') == 'damaged' ? 'selected' : '' }}>Hư hỏng</option>
-                                    <option value="expired" {{ old('status') == 'expired' ? 'selected' : '' }}>Hết hạn</option>
-                                </select>
-                                @error('status') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-
                             <div class="text-right">
                                 <a class="btn btn-secondary" href="{{ route('products.index') }}">Quay Lại</a>
                                 <button type="submit" class="btn btn-primary">Thêm Sản Phẩm</button>

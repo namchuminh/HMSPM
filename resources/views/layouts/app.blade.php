@@ -180,8 +180,23 @@
                                 <i class="nav-icon fa-solid fa-users"></i>
                                 <p>
                                     Người Dùng
+                                    <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('users.index') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Danh Sách</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('users.create') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Thêm Mới</p>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                         <li class="nav-item has-treeview">
                             <a href="#" class="nav-link">
@@ -283,7 +298,21 @@
                 positionClass: 'toast-top-right',
                 timeOut: 5000
             };
-            toastr.success('{{ session('success') }}', 'Thành Công!');
+            toastr.success('{{ session('success') }}', 'Thành Công');
         });
     </script>
+@endif
+
+@if (session('error'))
+<script>
+    $(document).ready(function(){
+        toastr.options = {
+            closeButton: true,
+            progressBar: true,
+            positionClass: 'toast-top-right',
+            timeOut: 5000
+        };
+        toastr.error('{{ session('error') }}', 'Thất Bại');
+    });
+</script>
 @endif

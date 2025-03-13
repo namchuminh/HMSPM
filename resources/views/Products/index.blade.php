@@ -61,8 +61,10 @@
                                 <th>STT</th>
                                 <th>Mã Sản Phẩm</th>
                                 <th>Tên Sản Phẩm</th>
-                                <th>Số lượng</th>
-                                <th>Trạng thái</th>
+                                <th>Tổng Số Lượng</th>
+                                <th>Đang Cho Mượn</th>
+                                <th>Hết Hạn</th>
+                                <th>Hư Hỏng</th>
                                 <th>Hành động</th>
                             </tr>
                         </thead>
@@ -74,15 +76,13 @@
                                     <td>{{ $product->name }}</td>
                                     <td>{{ $product->quantity }} sản phẩm</td>
                                     <td>
-                                        @php
-                                            $status_labels = [
-                                                'new' => 'Sản Phẩm Mới',
-                                                'used' => 'Đã Qua Sử Dụng',
-                                                'damaged' => 'Hư Hỏng',
-                                                'expired' => 'Hết Hạn'
-                                            ];
-                                        @endphp
-                                        <span class="badge badge-secondary">{{ $status_labels[$product->status] ?? 'Không xác định' }}</span>
+                                        <span class="badge badge-secondary">{{ $product->borrowed_quantity . ' sản phẩm' ?? '0 sản phẩm' }}</span>
+                                    </td>
+                                    <td>
+                                        <span class="badge badge-secondary">{{ $product->expired_quantity . ' sản phẩm' ?? '0 sản phẩm' }}</span>
+                                    </td>
+                                    <td>
+                                        <span class="badge badge-secondary">{{ $product->damaged_quantity . ' sản phẩm' ?? '0 sản phẩm' }}</span>
                                     </td>
                                     <td>
                                         <a href="{{ route('products.edit', $product->id) }}" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i> Sửa</a>

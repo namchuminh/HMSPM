@@ -9,6 +9,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 
 
 Route::get('/login', [AuthController::class, 'index'])->name('login');
@@ -55,6 +56,16 @@ Route::middleware(['auth.middleware'])->group(function () {
     Route::prefix('reports')->name('reports.')->group(function () {
         Route::get('/', [ReportController::class, 'index'])->name('index');
         Route::get('/generate', [ReportController::class, 'generate'])->name('generate');
+    });
+
+    // Quản lý ngươi dùng
+    Route::prefix('users')->name('users.')->group(function () {
+        Route::get('/', [UserController::class, 'index'])->name('index'); 
+        Route::get('/create', [UserController::class, 'create'])->name('create');
+        Route::post('/store', [UserController::class, 'store'])->name('store'); 
+        Route::get('/{id}/edit', [UserController::class, 'edit'])->name('edit'); 
+        Route::put('/{id}/update', [UserController::class, 'update'])->name('update'); 
+        Route::delete('/{id}/delete', [UserController::class, 'destroy'])->name('destroy'); 
     });
 
     // Quản lý thông báo
