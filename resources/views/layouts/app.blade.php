@@ -154,21 +154,15 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{ route('transactions.index') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Lịch Sử Giao Dịch</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{ route('transactions.create') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Tạo Phiếu Cho Mượn</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Tạo Phiếu Thu Hồi</p>
                                     </a>
                                 </li>
                             </ul>

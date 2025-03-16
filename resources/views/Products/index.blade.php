@@ -74,7 +74,9 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td><span class="badge badge-primary"><i>{{ $product->code }}</i></span></td>
                                     <td>{{ $product->name }}</td>
-                                    <td>{{ $product->quantity }} sản phẩm</td>
+                                    <td>
+                                        <span class="badge badge-danger">{{ $product->quantity }} sản phẩm</span>
+                                    </td>
                                     <td>
                                         <span class="badge badge-secondary">{{ $product->borrowed_quantity . ' sản phẩm' ?? '0 sản phẩm' }}</span>
                                     </td>

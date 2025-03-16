@@ -73,4 +73,24 @@ Route::middleware(['auth.middleware'])->group(function () {
 
     Route::get('/profile', [UserController::class, 'profile'])->name('users.profile');
     Route::post('/profile', [UserController::class, 'profileUpdate'])->name('users.profileUpdate');
+
+    Route::prefix('loans')->name('loans.')->group(function () {
+        Route::get('/', [LoanController::class, 'index'])->name('index');
+        Route::get('/create', [LoanController::class, 'create'])->name('create');
+        Route::post('/store', [LoanController::class, 'store'])->name('store');
+        Route::put('/{id}/return', [LoanController::class, 'update'])->name('update');
+        Route::delete('/{id}/delete', [LoanController::class, 'destroy'])->name('destroy');
+        Route::post('/bulk-action', [LoanController::class, 'bulkAction'])->name('bulkAction');
+    });
+    
+
+    Route::prefix('transactions')->name('transactions.')->group(function () {
+        Route::get('/', [TransactionController::class, 'index'])->name('index');
+        Route::get('/create', [TransactionController::class, 'create'])->name('create');
+        Route::post('/store', [TransactionController::class, 'store'])->name('store');
+        Route::get('/{id}', [TransactionController::class, 'show'])->name('show');
+        Route::get('/{id}/edit', [TransactionController::class, 'edit'])->name('edit');
+        Route::put('/{id}/update', [TransactionController::class, 'update'])->name('update');
+        Route::delete('/{id}/delete', [TransactionController::class, 'destroy'])->name('destroy');
+    });
 });
