@@ -49,30 +49,6 @@
                                 <textarea class="form-control" name="description" rows="4">{{ old('description', $product->description) }}</textarea>
                             </div>
 
-                            <div class="form-group">
-                                <label>Số Lượng</label>
-                                <input type="number" class="form-control" name="quantity" min="0" value="{{ old('quantity', $product->quantity) }}" required>
-                                @error('quantity') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-
-                            <div class="form-group">
-                                <label>Số Lượng Hết Hạn</label>
-                                <input type="number" class="form-control" name="expired_quantity" min="0" value="{{ old('expired_quantity', $product->expired_quantity) }}" required>
-                                @error('expired_quantity') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-
-                            <div class="form-group">
-                                <label>Số Lượng Hư Hỏng</label>
-                                <input type="number" class="form-control" name="damaged_quantity" min="0" value="{{ old('damaged_quantity', $product->damaged_quantity) }}" required>
-                                @error('damaged_quantity') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-
-                            <div class="form-group">
-                                <label>Số Lượng Đang Mượn</label>
-                                <input type="number" class="form-control" name="borrowed_quantity" min="0" value="{{ old('borrowed_quantity', $product->borrowed_quantity) }}" required>
-                                @error('borrowed_quantity') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-
                             <div class="text-right">
                                 <a class="btn btn-secondary" href="{{ route('products.index') }}">Quay Lại</a>
                                 <button type="submit" class="btn btn-primary">Cập Nhật</button>

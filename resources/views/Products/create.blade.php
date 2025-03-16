@@ -33,43 +33,19 @@
 
                             <div class="form-group">
                                 <label>Mã Sản Phẩm</label>
-                                <input type="text" class="form-control" name="code" value="{{ old('code') }}" required>
+                                <input type="text" class="form-control" name="code" value="{{ old('code') }}" placeholder="Nhập mã sản phẩm" required>
                                 @error('code') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
 
                             <div class="form-group">
                                 <label>Tên Sản Phẩm</label>
-                                <input type="text" class="form-control" name="name" value="{{ old('name') }}" required>
+                                <input type="text" class="form-control" name="name" value="{{ old('name') }}" placeholder="Nhập mã tên sản phẩm" required>
                                 @error('name') <span class="text-danger">{{ $message }}</span> @enderror
                             </div>
 
                             <div class="form-group">
                                 <label>Mô Tả</label>
-                                <textarea class="form-control" name="description" rows="4">{{ old('description') }}</textarea>
-                            </div>
-
-                            <div class="form-group">
-                                <label>Số Lượng</label>
-                                <input type="number" class="form-control" name="quantity" min="0" value="{{ old('quantity', 0) }}" required>
-                                @error('quantity') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-
-                            <div class="form-group">
-                                <label>Số Lượng Hết Hạn</label>
-                                <input type="number" class="form-control" name="expired_quantity" min="0" value="{{ old('expired_quantity', 0) }}" required>
-                                @error('expired_quantity') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-
-                            <div class="form-group">
-                                <label>Số Lượng Hư Hỏng</label>
-                                <input type="number" class="form-control" name="damaged_quantity" min="0" value="{{ old('damaged_quantity', 0) }}" required>
-                                @error('damaged_quantity') <span class="text-danger">{{ $message }}</span> @enderror
-                            </div>
-
-                            <div class="form-group">
-                                <label>Số Lượng Đang Mượn</label>
-                                <input type="number" class="form-control" name="borrowed_quantity" min="0" value="{{ old('borrowed_quantity', 0) }}" required>
-                                @error('borrowed_quantity') <span class="text-danger">{{ $message }}</span> @enderror
+                                <textarea class="form-control" placeholder="Mô tả sản phẩm" name="description" rows="4">{{ old('description') }}</textarea>
                             </div>
 
                             <div class="text-right">

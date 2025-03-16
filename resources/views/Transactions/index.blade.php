@@ -23,13 +23,13 @@
         <div class="card">
             <div class="card-header">
                 <form method="GET" action="{{ route('transactions.index') }}" class="form-inline">
-                    <input type="text" name="search" class="form-control mr-2" placeholder="Tìm kiếm người mượn, người tạo" value="{{ request('search') }}">
-                    <select name="transaction_type" class="form-control mr-2">
+                    <input type="text" name="search" class="form-control col-md-2 mr-2" placeholder="Tìm kiếm người mượn, người tạo" value="{{ request('search') }}">
+                    <select name="transaction_type" class="form-control mr-2 col-md-2 w-100">
                         <option value="">-- Loại Giao Dịch --</option>
-                        <option value="import" {{ request('transaction_type') == 'import' ? 'selected' : '' }}>Nhập Kho</option>
-                        <option value="loan" {{ request('transaction_type') == 'loan' ? 'selected' : '' }}>Mượn Sản Phẩm</option>
-                        <option value="return" {{ request('transaction_type') == 'return' ? 'selected' : '' }}>Trả Sản Phẩm</option>
+                        <option value="loan" {{ request('transaction_type') == 'loan' ? 'selected' : '' }}>Đang Cho Mượn</option>
+                        <option value="return" {{ request('transaction_type') == 'return' ? 'selected' : '' }}>Đã Thu Hồi</option>
                     </select>
+                    <input type="date" class="form-control col-md-2 mr-2" name="transaction_date" value="{{ request('transaction_date') }}">
                     <button type="submit" class="btn btn-primary">Lọc / Tìm Kiếm</button>
                     <a href="{{ route('transactions.index') }}" class="btn btn-secondary ml-2">Xóa Bộ Lọc</a>
                 </form>

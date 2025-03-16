@@ -67,16 +67,11 @@ class ProductController extends Controller
         $request->validate([
             'code' => 'required|unique:products,code|max:50',
             'name' => 'required|max:255',
-            'description' => 'nullable|string',
-            'quantity' => 'required|integer|min:0',
-            'expired_quantity' => 'required|integer|min:0',
-            'damaged_quantity' => 'required|integer|min:0',
-            'borrowed_quantity' => 'required|integer|min:0',
+            'description' => 'nullable|string'
         ], [
             'code.required' => 'Mã sản phẩm không được để trống.',
             'code.unique' => 'Mã sản phẩm đã tồn tại.',
             'name.required' => 'Tên sản phẩm không được để trống.',
-            'quantity.required' => 'Số lượng không được để trống.',
         ]);
 
         // Lưu sản phẩm vào database
@@ -104,30 +99,14 @@ class ProductController extends Controller
         $request->validate([
             'code' => 'required|max:50|unique:products,code,' . $id,
             'name' => 'required|max:255',
-            'description' => 'nullable|string',
-            'quantity' => 'required|integer|min:0',
-            'expired_quantity' => 'required|integer|min:0',
-            'damaged_quantity' => 'required|integer|min:0',
-            'borrowed_quantity' => 'required|integer|min:0',
+            'description' => 'nullable|string'
         ], [
             'code.required' => 'Mã sản phẩm không được để trống.',
             'code.unique' => 'Mã sản phẩm đã tồn tại.',
             'code.max' => 'Mã sản phẩm không được vượt quá 50 ký tự.',
             'name.required' => 'Tên sản phẩm không được để trống.',
             'name.max' => 'Tên sản phẩm không được vượt quá 255 ký tự.',
-            'description.string' => 'Mô tả sản phẩm phải là chuỗi ký tự.',
-            'quantity.required' => 'Số lượng không được để trống.',
-            'quantity.integer' => 'Số lượng phải là số nguyên.',
-            'quantity.min' => 'Số lượng không được nhỏ hơn 0.',
-            'expired_quantity.required' => 'Số lượng hết hạn không được để trống.',
-            'expired_quantity.integer' => 'Số lượng hết hạn phải là số nguyên.',
-            'expired_quantity.min' => 'Số lượng hết hạn không được nhỏ hơn 0.',
-            'damaged_quantity.required' => 'Số lượng hư hỏng không được để trống.',
-            'damaged_quantity.integer' => 'Số lượng hư hỏng phải là số nguyên.',
-            'damaged_quantity.min' => 'Số lượng hư hỏng không được nhỏ hơn 0.',
-            'borrowed_quantity.required' => 'Số lượng đang mượn không được để trống.',
-            'borrowed_quantity.integer' => 'Số lượng đang mượn phải là số nguyên.',
-            'borrowed_quantity.min' => 'Số lượng đang mượn không được nhỏ hơn 0.'
+            'description.string' => 'Mô tả sản phẩm phải là chuỗi ký tự.'
         ]);
 
         $product->update($request->all());

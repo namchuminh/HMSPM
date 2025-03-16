@@ -77,7 +77,7 @@
                     <div class="card-header">
                         <h3 class="card-title not_print">Xem Trước Phiếu Mượn</h3>
                     </div>
-                    <div class="card-body" id="loan_preview">
+                    <div class="card-body" style="height: 470px;" id="loan_preview">
                         <h4 class="text-center"><strong>PHIẾU MƯỢN SẢN PHẨM</strong></h4>
                         <hr>
                         <p><strong>Ngày tạo phiếu:</strong> {{ now()->format('d/m/Y H:i') }}</p>
@@ -89,13 +89,15 @@
                         <div class="row mt-4 d-flex justify-content-between">
                             <div class="col-6 text-center">
                                 <p><strong>Người Cho Mượn</strong></p>
-                                <br><br><br>
+                                <p>(Ký & ghi rõ họ tên)</p>
+                                <br><br>
                                 <p class="font-weight-bold">{{ auth()->user()->name }}</p>
                             </div>
                             <div class="col-6 text-center">
                                 <p><strong>Người Mượn</strong></p>
-                                <br><br><br>
                                 <p>(Ký & ghi rõ họ tên)</p>
+                                <br><br>
+                                <p class="font-weight-bold" id="chukynguoimuon"></p>
                             </div>
                         </div>
                     </div>
@@ -123,6 +125,7 @@
         let selected = this.options[this.selectedIndex];
         document.getElementById('preview_user').innerText = selected.dataset.name || 'Chưa chọn';
         document.getElementById('preview_phone').innerText = selected.dataset.phone || 'Chưa chọn';
+        document.getElementById('chukynguoimuon').innerText = selected.dataset.name || '';
     });
 
     document.querySelector('#notes').addEventListener('input', function() {

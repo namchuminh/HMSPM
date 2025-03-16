@@ -15,10 +15,10 @@ class TransactionController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Transaction::with(['user', 'creator']) // Lấy dữ liệu kèm quan hệ User & Creator
-                    ->orderBy('transaction_date', 'desc'); // Sắp xếp theo ngày giao dịch mới nhất
+        $query = Transaction::with(['user', 'creator'])
+                    ->orderBy('transaction_date', 'desc');
 
-        // Tìm kiếm theo người mượn (user), người tạo phiếu (created_by), hoặc loại giao dịch
+        // Tìm kiếm theo người mượn, người tạo phiếu, loại giao dịch
         if ($request->has('search') && !empty($request->search)) {
             $search = $request->search;
             $query->whereHas('user', function ($q) use ($search) {
@@ -31,14 +31,18 @@ class TransactionController extends Controller
                 ->orWhere('transaction_type', 'like', "%{$search}%");
         }
 
-        // Lọc theo loại giao dịch (import, loan, return)
+        // Lọc theo loại giao dịch
         if ($request->has('transaction_type') && !empty($request->transaction_type)) {
             $query->where('transaction_type', $request->transaction_type);
         }
 
-        // Phân trang (10 giao dịch mỗi trang)
-        $transactions = $query->paginate(10);
+        // Lọc theo ngày tạo phiếu
+        if ($request->has('transaction_date') && !empty($request->transaction_date)) {
+            $query->whereDate('transaction_date', $request->transaction_date);
+        }
 
+        // Phân trang
+        $transactions = $query->paginate(10);
         $totalPages = $transactions->lastPage();
 
         return view('transactions.index', compact('transactions', 'totalPages'));
