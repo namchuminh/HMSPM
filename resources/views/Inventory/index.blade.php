@@ -55,7 +55,8 @@
                                     <th>Mã Sản Phẩm</th>
                                     <th>Ngày Hết Hạn</th>
                                     <th>Ngày Nhập Kho</th>
-                                    <th>Trạng Thái</th>
+                                    <th>Số Lượng Nhập</th>
+                                    <th>Loại Sản Phẩm</th>
                                     <th>Hành Động</th>
                                 </tr>
                             </thead>
@@ -65,12 +66,15 @@
                                         <td>{{ $loop->iteration }}</td>
                                         <td><span class="badge badge-primary"><i>{{ $inventory->product->code }}</i></span></td>
                                         <td>{{ $inventory->expiration_date ?? 'Không có' }}</td>
-                                        <td>{{ $inventory->imported_date ?? 'Không xác định'}}</td>
+                                        <td><span class="badge badge-dark">{{ $inventory->imported_date ?? 'Không xác định'}}</span></td>
+                                        <td><span class="badge badge-warning">+ {{ $inventory->quantity }} sản phẩm</span></td>
                                         <td>
                                             @php
                                                 $status_labels = [
                                                     'new' => 'Sản Phẩm Mới',
-                                                    'used' => 'Đã Qua Sử Dụng'
+                                                    'used' => 'Đã Qua Sử Dụng',
+                                                    'damaged' => 'Đã Hư Hỏng',
+                                                    'expired' => 'Đã Hết Hạn'
                                                 ];
                                             @endphp
                                             <span class="badge badge-secondary">{{ $status_labels[$inventory->status] ?? 'Không xác định' }}</span>

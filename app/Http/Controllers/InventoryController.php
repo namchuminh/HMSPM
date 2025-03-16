@@ -97,8 +97,14 @@ class InventoryController extends Controller
             'user_id' => Auth::id()
         ]);
 
-        // Cập nhật số lượng sản phẩm
+        if($request->status == 'expired') {
+            $product->expired_quantity += $request->quantity;
+        } elseif($request->status == 'damaged') {
+            $product->damaged_quantity += $request->quantity;
+        } 
+
         $product->quantity += $request->quantity;
+
         $product->save();
 
         return redirect()->route('inventory.index')->with('success', 'Phiếu nhập kho đã được lưu và số lượng sản phẩm đã được cập nhật.');
@@ -128,48 +134,58 @@ class InventoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $inventory = Inventory::findOrFail($id);
+        // $inventory = Inventory::findOrFail($id);
 
-        $request->validate([
-            'product_id' => 'required|exists:products,id',
-            'status' => 'required|in:new,used,damaged,expired',
-            'expiration_date' => 'nullable|date',
-            'import_receipt' => 'nullable|file|mimes:pdf,jpg,png,jpeg|max:10240',
-            'quantity' => 'required|integer|min:1'
-        ], [
-            'product_id.required' => 'Vui lòng chọn sản phẩm.',
-            'product_id.exists' => 'Sản phẩm không hợp lệ.',
-            'status.required' => 'Trạng thái sản phẩm không được để trống.',
-            'status.in' => 'Trạng thái sản phẩm không hợp lệ.',
-            'expiration_date.date' => 'Ngày hết hạn phải là định dạng ngày hợp lệ.',
-            'import_receipt.mimes' => 'Chỉ chấp nhận file PDF, JPG, PNG.',
-            'import_receipt.max' => 'Dung lượng file không được vượt quá 10MB.',
-            'quantity.required' => 'Số lượng không được để trống.',
-            'quantity.min' => 'Số lượng phải lớn hơn 0.'
-        ]);
+        // $request->validate([
+        //     'product_id' => 'required|exists:products,id',
+        //     'status' => 'required|in:new,used,damaged,expired',
+        //     'expiration_date' => 'nullable|date',
+        //     'import_receipt' => 'nullable|file|mimes:pdf,jpg,png,jpeg|max:10240',
+        //     'quantity' => 'required|integer|min:1'
+        // ], [
+        //     'product_id.required' => 'Vui lòng chọn sản phẩm.',
+        //     'product_id.exists' => 'Sản phẩm không hợp lệ.',
+        //     'status.required' => 'Trạng thái sản phẩm không được để trống.',
+        //     'status.in' => 'Trạng thái sản phẩm không hợp lệ.',
+        //     'expiration_date.date' => 'Ngày hết hạn phải là định dạng ngày hợp lệ.',
+        //     'import_receipt.mimes' => 'Chỉ chấp nhận file PDF, JPG, PNG.',
+        //     'import_receipt.max' => 'Dung lượng file không được vượt quá 10MB.',
+        //     'quantity.required' => 'Số lượng không được để trống.',
+        //     'quantity.min' => 'Số lượng phải lớn hơn 0.'
+        // ]);
 
-        // Xử lý cập nhật file phiếu nhập kho (nếu có)
-        if ($request->hasFile('import_receipt')) {
-            $receiptPath = $request->file('import_receipt')->store('receipts', 'public');
-            $inventory->import_receipt = $receiptPath;
-        }
+        // // Xử lý cập nhật file phiếu nhập kho (nếu có)
+        // if ($request->hasFile('import_receipt')) {
+        //     $receiptPath = $request->file('import_receipt')->store('receipts', 'public');
+        //     $inventory->import_receipt = $receiptPath;
+        // }
 
-        $product = Product::findOrFail($inventory->product_id);
+        // $product = Product::findOrFail($inventory->product_id);
 
-        $product->quantity -= $inventory->quantity;
-        $product->save();
+        // if($request->status == 'expired') {
+        //     $product->expired_quantity -= $inventory->quantity;
+        //     $product->expired_quantity += $request->quantity;
+        //     $product->save();
+        // } elseif($request->status == 'damaged') {
+        //     $product->damaged_quantity -= $inventory->quantity;
+        //     $product->damaged_quantity += $request->quantity;   
+        //     $product->save();
+        // } 
 
-        $product->quantity += $request->quantity;
-        $product->save();
+        // $product->quantity -= $inventory->quantity;
+        // $product->save();
 
-        $inventory->update([
-            'product_id' => $request->product_id,
-            'status' => $request->status,
-            'expiration_date' => $request->expiration_date,
-            'quantity' => $request->quantity
-        ]);
+        // $product->quantity += $request->quantity;
+        // $product->save();
 
-        return redirect()->route('inventory.edit', $id)->with('success', 'Phiếu nhập kho đã được cập nhật.');
+        // $inventory->update([
+        //     'product_id' => $request->product_id,
+        //     'status' => $request->status,
+        //     'expiration_date' => $request->expiration_date,
+        //     'quantity' => $request->quantity
+        // ]);
+
+        // return redirect()->route('inventory.edit', $id)->with('success', 'Phiếu nhập kho đã được cập nhật.');
     }
 
     /**

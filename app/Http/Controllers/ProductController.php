@@ -22,24 +22,13 @@ class ProductController extends Controller
             });
         }
 
-        // Lọc theo số lượng hết hạn
-        if ($request->has('expired_quantity') && $request->expired_quantity != '') {
-            $query->where('expired_quantity', '>=', $request->expired_quantity);
-        }
-
-        // Lọc theo số lượng hư hỏng
-        if ($request->has('damaged_quantity') && $request->damaged_quantity != '') {
-            $query->where('damaged_quantity', '>=', $request->damaged_quantity);
-        }
-
-        // Lọc theo số lượng đang cho mượn
-        if ($request->has('borrowed_quantity') && $request->borrowed_quantity != '') {
-            $query->where('borrowed_quantity', '>=', $request->borrowed_quantity);
-        }
-
         // Lọc theo trạng thái sản phẩm
         if ($request->has('status') && $request->status != '') {
-            $query->where('status', $request->status);
+            if ($request->status == 'expired') {
+                $query->where('expired_quantity', '>=', 1);
+            } elseif ($request->status == 'damaged') {
+                $query->where('damaged_quantity', '>=', 1);
+            }
         }
 
         // Phân trang kết quả

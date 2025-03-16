@@ -87,17 +87,17 @@
                         <p><strong>Ghi chú:</strong> <span id="preview_notes">Không có</span></p>
                         <hr>
                         <div class="row mt-4 d-flex justify-content-between">
-                            <div class="col-6 text-center">
-                                <p><strong>Người Cho Mượn</strong></p>
+                            <div class="col-6 text-left">
+                                <p class="ml-1"><strong> Người Tạo Phiếu</strong></p>
                                 <p>(Ký & ghi rõ họ tên)</p>
                                 <br><br>
-                                <p class="font-weight-bold">{{ auth()->user()->name }}</p>
+                                <p class="font-weight-bold ml-2">{{ auth()->user()->name }}</p>
                             </div>
-                            <div class="col-6 text-center">
-                                <p><strong>Người Mượn</strong></p>
+                            <div class="col-6 text-right">
+                                <p class="mr-3"><strong>Người Mượn</strong></p>
                                 <p>(Ký & ghi rõ họ tên)</p>
                                 <br><br>
-                                <p class="font-weight-bold" id="chukynguoimuon"></p>
+                                <p class="font-weight-bold mr-2" id="chukynguoimuon"></p>
                             </div>
                         </div>
                     </div>

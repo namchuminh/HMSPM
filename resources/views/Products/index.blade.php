@@ -30,15 +30,6 @@
                                 <input type="text" class="form-control w-100" name="search" placeholder="Tìm kiếm mã/tên" value="{{ request('search') }}">
                             </div>
                             <div class="col-md-2">
-                                <input type="number" class="form-control w-100" name="expired_quantity" placeholder="Số lượng hết hạn" value="{{ request('expired_quantity') }}">
-                            </div>
-                            <div class="col-md-2">
-                                <input type="number" class="form-control w-100" name="damaged_quantity" placeholder="Số lượng hư hỏng" value="{{ request('damaged_quantity') }}">
-                            </div>
-                            <div class="col-md-2">
-                                <input type="number" class="form-control w-100" name="borrowed_quantity" placeholder="Số lượng đang mượn" value="{{ request('borrowed_quantity') }}">
-                            </div>
-                            <div class="col-md-2">
                                 <select name="status" class="form-control w-100">
                                     <option value="">Tất cả trạng thái</option>
                                     <option value="new" {{ request('status') == 'new' ? 'selected' : '' }}>Mới</option>

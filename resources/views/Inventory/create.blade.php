@@ -119,7 +119,15 @@
     });
 
     document.querySelector('select[name="status"]').addEventListener('change', function() {
-        document.getElementById('preview_status').innerText = this.value === 'new' ? 'Mới' : 'Đã qua sử dụng';
+        if (this.value == 'new') {
+            document.getElementById('preview_status').innerText = 'Mới';
+        } else if(this.value == 'used') {
+            document.getElementById('preview_status').innerText = 'Đã sử dụng';
+        } else if(this.value == 'damaged') {
+            document.getElementById('preview_status').innerText = 'Hư hỏng';
+        } else {
+            document.getElementById('preview_status').innerText = 'Hết hạn';
+        }
     });
 
     document.querySelector('input[name="expiration_date"]').addEventListener('input', function() {
