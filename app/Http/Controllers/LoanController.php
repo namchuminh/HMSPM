@@ -41,16 +41,20 @@ class LoanController extends Controller
         if ($availableQuantity < $request->quantity) {
             return redirect()->back()->with('error', 'Số lượng sản phẩm hợp lệ không đủ để mượn.');
         }
-    
+        
+        $quanlityLoan = $request->quantity;
+
         // Cập nhật số lượng sản phẩm
         $product->increment('borrowed_quantity', $request->quantity);
+        $product->save();
+        
     
         // Tạo khoản mượn mới
         $loan = Loan::create([
             'transaction_id' => $request->transaction_id,
             'product_id' => $request->product_id,
             'loan_date' => now(),
-            'quantity' => $request->quantity,
+            'quantity' => $quanlityLoan,
             'return_date' => $request->return_date,
             'status' => 'borrowed',
             'notes' => $request->notes,
@@ -82,25 +86,28 @@ class LoanController extends Controller
             if ($request->action === 'return') {
                 // Cập nhật trạng thái mượn
                 $loan->update(['status' => 'returned']);
+
                 // Giảm số lượng đang mượn của sản phẩm
                 $product->decrement('borrowed_quantity', $loan->quantity);
+                $product->save();
+
+                // Kiểm tra xem tất cả các khoản mượn của giao dịch đã được trả chưa
+                $transaction = Transaction::findOrFail($request->transaction_id);
+                $remainingLoans = Loan::where('transaction_id', $transaction->id)
+                                        ->where('status', 'borrowed')
+                                        ->count();
+
+                if ($remainingLoans === 0) {
+                    $transaction->update(['transaction_type' => 'return']);
+                }
             } elseif ($request->action === 'delete') {
                 if ($loan->status === 'borrowed') {
                     $product->decrement('borrowed_quantity', $loan->quantity);
+                    $product->save();
                     // Xóa khoản mượn
                     $loan->delete();
                 }
             }
-        }
-
-        // Kiểm tra xem tất cả các khoản mượn của giao dịch đã được trả chưa
-        $transaction = Transaction::findOrFail($request->transaction_id);
-        $remainingLoans = Loan::where('transaction_id', $transaction->id)
-                                ->where('status', 'borrowed')
-                                ->count();
-
-        if ($remainingLoans === 0) {
-            $transaction->update(['transaction_type' => 'return']);
         }
 
         return redirect()->route('transactions.show', $request->transaction_id)

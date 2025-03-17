@@ -1,18 +1,18 @@
 @extends('layouts.app')
-@section('title', 'Chỉnh Sửa Phiếu Nhập Kho')
+@section('title', 'Xem Phiếu Nhập Kho')
 
 @section('content')
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Chỉnh Sửa Phiếu Nhập Kho</h1>
+                <h1>Xem Phiếu Nhập Kho</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Trang Chủ</a></li>
                     <li class="breadcrumb-item"><a href="{{ route('inventory.index') }}">Quản Lý Nhập Kho</a></li>
-                    <li class="breadcrumb-item active">Chỉnh Sửa Phiếu Nhập Kho</li>
+                    <li class="breadcrumb-item active">Xem Phiếu Nhập Kho</li>
                 </ol>
             </div>
         </div>
@@ -139,7 +139,7 @@
                     <p class="ml-3"><strong>Người Nhập</strong></p>
                     <p>(Ký & ghi rõ họ tên)</p>
                     <br><br>
-                    <p class="font-weight-bold ml-3">{{ auth()->user()->name }}</p>
+                    <p class="font-weight-bold ml-3">{{ $inventory->user->name }}</p>
                 </div>
                 <div class="col-6 text-right">
                     <p class="mr-3"><strong>Bên Cung Cấp</strong></p>

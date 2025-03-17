@@ -15,6 +15,7 @@ class Loan extends Model
         'loan_date',
         'return_date',
         'status',
+        'quantity',
         'notes'
     ];
 
