@@ -121,7 +121,7 @@
                             </ul>
                         </li>
                         <li class="nav-item has-treeview">
-                            <a href="{{ route('products.index') }}" class="nav-link">
+                            <a href="{{ route('lifecycle.index') }}" class="nav-link">
                                 <i class="nav-icon fa-solid fa-clock-rotate-left"></i>
                                 <p>
                                     Vòng Đời
@@ -130,13 +130,13 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{ route('products.index') }}" class="nav-link">
+                                    <a href="{{ route('lifecycle.index') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Danh Sách</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ route('products.create') }}" class="nav-link">
+                                    <a href="{{ route('lifecycle.create') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Thêm Mới</p>
                                     </a>

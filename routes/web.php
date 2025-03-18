@@ -8,6 +8,7 @@ use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ProductLifecycleController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 
@@ -93,4 +94,15 @@ Route::middleware(['auth.middleware'])->group(function () {
         Route::put('/{id}/update', [TransactionController::class, 'update'])->name('update');
         Route::delete('/{id}/delete', [TransactionController::class, 'destroy'])->name('destroy');
     });
+
+    Route::prefix('lifecycle')->name('lifecycle.')->group(function () {
+        Route::get('/', [ProductLifecycleController::class, 'index'])->name('index');
+        Route::get('/create', [ProductLifecycleController::class, 'create'])->name('create');
+        Route::post('/store', [ProductLifecycleController::class, 'store'])->name('store');
+        Route::get('/{id}', [ProductLifecycleController::class, 'show'])->name('show');
+        Route::get('/{id}/edit', [ProductLifecycleController::class, 'edit'])->name('edit');
+        Route::put('/{id}/update', [ProductLifecycleController::class, 'update'])->name('update');
+        Route::delete('/{id}/delete', [ProductLifecycleController::class, 'destroy'])->name('destroy');
+    });
+
 });
