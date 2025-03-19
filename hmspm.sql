@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 13, 2025 at 09:12 PM
+-- Generation Time: Mar 19, 2025 at 10:44 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -46,7 +46,7 @@ CREATE TABLE `failed_jobs` (
 CREATE TABLE `inventories` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `product_id` bigint(20) UNSIGNED NOT NULL,
-  `status` enum('new','used') NOT NULL,
+  `status` enum('new','used','expired','damaged') NOT NULL,
   `expiration_date` date DEFAULT NULL,
   `imported_date` timestamp NOT NULL DEFAULT current_timestamp(),
   `import_receipt` varchar(255) DEFAULT NULL,
@@ -61,7 +61,10 @@ CREATE TABLE `inventories` (
 --
 
 INSERT INTO `inventories` (`id`, `product_id`, `status`, `expiration_date`, `imported_date`, `import_receipt`, `user_id`, `quantity`, `created_at`, `updated_at`) VALUES
-(7, 1, 'used', '2025-03-14', '2025-03-12 04:10:51', 'receipts/rLysknJf7TJZnrhZxqNalxkSqBdwzpGGyaOyVUgE.png', 1, 15, '2025-03-12 04:10:51', '2025-03-12 04:11:17');
+(17, 6, 'new', '2025-03-29', '2025-03-17 03:39:09', 'receipts/rxBEoNa7lazCv3vNM2DK8sV2UTZtn9hwqTLxoDzp.jpg', 1, 10, '2025-03-17 03:39:09', '2025-03-17 03:39:09'),
+(18, 6, 'damaged', NULL, '2025-03-17 03:51:34', 'receipts/lYT0j1DjSAkmXPwGBdbmeSEDilxO25ZNAZP9onhM.jpg', 1, 12, '2025-03-17 03:51:34', '2025-03-17 03:51:34'),
+(19, 6, 'expired', '2025-03-22', '2025-03-17 03:52:32', 'receipts/UcIRbGYK67JDRYAahxLTk37YNicn6pm55ly1tgLS.jpg', 1, 5, '2025-03-17 03:52:32', '2025-03-17 03:52:32'),
+(20, 7, 'new', '2025-03-19', '2025-03-18 05:18:45', 'receipts/MjrvubVlUyxkWNHa0eLpz1WOxpAAZvpXUv5R4Nj4.jpg', 1, 5, '2025-03-18 05:18:45', '2025-03-18 05:18:45');
 
 -- --------------------------------------------------------
 
@@ -71,13 +74,25 @@ INSERT INTO `inventories` (`id`, `product_id`, `status`, `expiration_date`, `imp
 
 CREATE TABLE `loans` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `transaction_id` bigint(20) UNSIGNED NOT NULL,
   `product_id` bigint(20) UNSIGNED NOT NULL,
-  `user_id` bigint(20) UNSIGNED NOT NULL,
   `loan_date` timestamp NOT NULL DEFAULT current_timestamp(),
+  `quantity` int(11) NOT NULL DEFAULT 1,
   `return_date` date DEFAULT NULL,
   `status` enum('borrowed','returned','overdue') DEFAULT 'borrowed',
-  `notes` text DEFAULT NULL
+  `notes` text DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `loans`
+--
+
+INSERT INTO `loans` (`id`, `transaction_id`, `product_id`, `loan_date`, `quantity`, `return_date`, `status`, `notes`, `created_at`, `updated_at`) VALUES
+(16, 9, 6, '2025-03-17 03:50:51', 5, '2025-03-20', 'returned', 'abcde', '2025-03-17 03:50:51', '2025-03-17 03:51:07'),
+(19, 11, 6, '2025-03-18 05:24:34', 9, '2025-03-22', 'returned', NULL, '2025-03-18 05:24:34', '2025-03-18 05:25:47'),
+(20, 11, 7, '2025-03-18 05:24:56', 1, '2025-03-29', 'returned', NULL, '2025-03-18 05:24:56', '2025-03-18 05:25:53');
 
 -- --------------------------------------------------------
 
@@ -171,24 +186,40 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `code`, `name`, `description`, `quantity`, `expired_quantity`, `damaged_quantity`, `borrowed_quantity`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'SANPHAMMOI1111', 'Sản phẩm mới 123', 'abcde', 42, 0, 0, 0, 'new', '2025-03-11 07:23:17', '2025-03-12 04:11:17'),
-(2, 'SANPHAMMOI222', 'Sản phẩm mới 2', 'aaa', 6, 0, 0, 1, 'damaged', '2025-03-11 07:44:13', '2025-03-12 04:04:47'),
-(3, 'ABCDE', 'AAAAA', 'AAA', 0, 0, 0, 0, 'new', '2025-03-12 04:18:44', '2025-03-12 04:18:44');
+(6, 'SANPHAM111', 'Sản phẩm 111', 'Sản phẩm 111', 27, 0, 8, 0, 'new', '2025-03-17 03:38:23', '2025-03-18 05:25:47'),
+(7, 'SANPHAM222', 'Sản phẩm 222', 'Sản phẩm 222', 5, 0, 3, 0, 'new', '2025-03-17 03:38:39', '2025-03-18 05:25:53');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `product_lifecycle`
+-- Table structure for table `product_lifecycles`
 --
 
-CREATE TABLE `product_lifecycle` (
+CREATE TABLE `product_lifecycles` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `product_id` bigint(20) UNSIGNED NOT NULL,
   `previous_status` enum('new','used','damaged','expired') NOT NULL,
   `new_status` enum('new','used','damaged','expired') NOT NULL,
   `changed_by` bigint(20) UNSIGNED NOT NULL,
-  `changed_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `quantity` int(11) NOT NULL DEFAULT 1,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `product_lifecycles`
+--
+
+INSERT INTO `product_lifecycles` (`id`, `product_id`, `previous_status`, `new_status`, `changed_by`, `quantity`, `created_at`, `updated_at`) VALUES
+(1, 6, 'damaged', 'damaged', 1, 3, '2025-03-18 04:25:56', '2025-03-18 04:25:56'),
+(2, 6, 'new', 'damaged', 1, 3, '2025-03-18 04:26:25', '2025-03-18 04:26:25'),
+(3, 6, 'damaged', 'new', 1, 15, '2025-03-18 04:27:18', '2025-03-18 04:27:18'),
+(4, 6, 'expired', 'new', 1, 5, '2025-03-18 04:27:46', '2025-03-18 04:27:46'),
+(5, 6, 'new', 'expired', 1, 5, '2025-03-18 04:28:45', '2025-03-18 04:28:45'),
+(6, 6, 'expired', 'new', 1, 5, '2025-03-18 04:41:54', '2025-03-18 04:41:54'),
+(7, 6, 'new', 'damaged', 1, 5, '2025-03-18 04:43:37', '2025-03-18 04:43:37'),
+(8, 6, 'new', 'damaged', 1, 3, '2025-03-18 05:00:09', '2025-03-18 05:00:09'),
+(9, 7, 'new', 'damaged', 1, 3, '2025-03-18 05:20:01', '2025-03-18 05:20:01');
 
 -- --------------------------------------------------------
 
@@ -225,12 +256,23 @@ CREATE TABLE `search_logs` (
 
 CREATE TABLE `transactions` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `product_id` bigint(20) UNSIGNED NOT NULL,
   `user_id` bigint(20) UNSIGNED NOT NULL,
+  `created_by` bigint(20) UNSIGNED NOT NULL,
   `transaction_type` enum('import','loan','return') NOT NULL,
   `transaction_date` timestamp NOT NULL DEFAULT current_timestamp(),
-  `details` text DEFAULT NULL
+  `details` text DEFAULT 'Không có',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updatedAt` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `transactions`
+--
+
+INSERT INTO `transactions` (`id`, `user_id`, `created_by`, `transaction_type`, `transaction_date`, `details`, `created_at`, `updatedAt`) VALUES
+(9, 1, 1, 'return', '2025-03-17 10:50:41', 'ABCDE', '2025-03-17 10:50:41', '2025-03-17 10:50:41'),
+(10, 2, 1, 'loan', '2025-03-17 10:52:54', 'abcx', '2025-03-17 10:52:54', '2025-03-17 10:52:54'),
+(11, 3, 1, 'return', '2025-03-18 12:23:25', 'Mượn sản phẩm vào buổi chiều', '2025-03-18 12:23:25', '2025-03-18 12:23:25');
 
 -- --------------------------------------------------------
 
@@ -259,7 +301,8 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `name`, `email`, `phone`, `avatar`, `email_verified_at`, `password`, `role`, `status`, `remember_token`, `created_at`, `updated_at`) VALUES
 (1, 'Nguyễn Văn An', 'admin@gmail.com', '0999888999', 'avatars/SsaCFiWWhPE1o1X8VJk5AvBI66rN4ZXyRwvvU7F7.jpg', NULL, '$2a$10$N8oEXZpjCwP4Un7uwhL8XOi5BW0nhh5Ab6d.2Ec9a10dBbhmBinGC', 'admin', 'active', NULL, '2025-03-11 12:28:04', '2025-03-13 13:08:29'),
-(2, 'Lại Văn Nam', 'laivannam@gmail.com', '0379962045', 'avatars/v3DHKiEvx4SmH7lFqOSVinp7y8Etu7IW8htDMaI8.jpg', NULL, '$2y$10$95D1D4ojIqqLwymYs46sh.KwZCrEet13jQAYFTtuRXnZoPc74BDOW', 'manager', 'active', NULL, '2025-03-13 12:46:18', '2025-03-13 12:58:33');
+(2, 'Lại Văn Nam', 'laivannam@gmail.com', '0379962045', 'avatars/v3DHKiEvx4SmH7lFqOSVinp7y8Etu7IW8htDMaI8.jpg', NULL, '$2y$10$kkLXG2BYLe3QO0ejzReidu5e8LtJLnhYA0bcYd.PeuPq33PrvOL8G', 'manager', 'active', NULL, '2025-03-13 12:46:18', '2025-03-18 05:06:19'),
+(3, 'Nguyen Van Binh', 'nguyenvanb@gmail.com', '0555666888', 'avatars/W4bZC9LfL4zG8HXoAG6avGnvmfnBC5U9vwYtrFNj.jpg', NULL, '$2y$10$yIdTYhdsfmHz6B.Hq0CNVeqmiJKrBVt0pEGlogt5iz5RbfR9FTlOO', 'user', 'active', NULL, '2025-03-18 05:22:22', '2025-03-18 05:22:22');
 
 --
 -- Indexes for dumped tables
@@ -286,7 +329,7 @@ ALTER TABLE `inventories`
 ALTER TABLE `loans`
   ADD PRIMARY KEY (`id`),
   ADD KEY `product_id` (`product_id`),
-  ADD KEY `user_id` (`user_id`);
+  ADD KEY `transactions` (`transaction_id`);
 
 --
 -- Indexes for table `migrations`
@@ -323,9 +366,9 @@ ALTER TABLE `products`
   ADD UNIQUE KEY `code` (`code`);
 
 --
--- Indexes for table `product_lifecycle`
+-- Indexes for table `product_lifecycles`
 --
-ALTER TABLE `product_lifecycle`
+ALTER TABLE `product_lifecycles`
   ADD PRIMARY KEY (`id`),
   ADD KEY `product_id` (`product_id`),
   ADD KEY `changed_by` (`changed_by`);
@@ -349,8 +392,8 @@ ALTER TABLE `search_logs`
 --
 ALTER TABLE `transactions`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `product_id` (`product_id`),
-  ADD KEY `user_id` (`user_id`);
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `created_by` (`created_by`);
 
 --
 -- Indexes for table `users`
@@ -374,13 +417,13 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `inventories`
 --
 ALTER TABLE `inventories`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `loans`
 --
 ALTER TABLE `loans`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `migrations`
@@ -404,13 +447,13 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- AUTO_INCREMENT for table `product_lifecycle`
+-- AUTO_INCREMENT for table `product_lifecycles`
 --
-ALTER TABLE `product_lifecycle`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+ALTER TABLE `product_lifecycles`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `reports`
@@ -428,13 +471,13 @@ ALTER TABLE `search_logs`
 -- AUTO_INCREMENT for table `transactions`
 --
 ALTER TABLE `transactions`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
@@ -452,7 +495,7 @@ ALTER TABLE `inventories`
 --
 ALTER TABLE `loans`
   ADD CONSTRAINT `loans_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `loans_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `loans_ibfk_3` FOREIGN KEY (`transaction_id`) REFERENCES `transactions` (`id`);
 
 --
 -- Constraints for table `notifications`
@@ -461,11 +504,11 @@ ALTER TABLE `notifications`
   ADD CONSTRAINT `notifications_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `product_lifecycle`
+-- Constraints for table `product_lifecycles`
 --
-ALTER TABLE `product_lifecycle`
-  ADD CONSTRAINT `product_lifecycle_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `product_lifecycle_ibfk_2` FOREIGN KEY (`changed_by`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+ALTER TABLE `product_lifecycles`
+  ADD CONSTRAINT `product_lifecycles_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `product_lifecycles_ibfk_2` FOREIGN KEY (`changed_by`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `reports`
@@ -483,8 +526,8 @@ ALTER TABLE `search_logs`
 -- Constraints for table `transactions`
 --
 ALTER TABLE `transactions`
-  ADD CONSTRAINT `transactions_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `transactions_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `transactions_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `transactions_ibfk_3` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -74,29 +74,40 @@
                         </li>
 
                         <li class="nav-header">QUẢN LÝ SẢN PHẨM</li>
-                        <li class="nav-item has-treeview">
-                            <a href="{{ route('products.index') }}" class="nav-link">
-                                <i class="nav-icon fa-solid fa-layer-group"></i>
-                                <p>
-                                    Sản Phẩm
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ route('products.index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Danh Sách</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('products.create') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Thêm Mới</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
+                        @if(auth()->user()->role != "admin")
+                            <li class="nav-item has-treeview">
+                                <a href="{{ route('products.index') }}" class="nav-link">
+                                    <i class="nav-icon fa-solid fa-layer-group"></i>
+                                    <p>
+                                        Sản Phẩm
+                                    </p>
+                                </a>
+                            </li>
+                            @else
+                            <li class="nav-item has-treeview">
+                                <a href="{{ route('products.index') }}" class="nav-link">
+                                    <i class="nav-icon fa-solid fa-layer-group"></i>
+                                    <p>
+                                        Sản Phẩm
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="{{ route('products.index') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Danh Sách</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ route('products.create') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Thêm Mới</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        @endif
                         <li class="nav-item has-treeview">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fa-solid fa-square-plus"></i>
@@ -169,29 +180,31 @@
                         </li>
                         
                         <li class="nav-header">QUẢN LÝ HỆ THỐNG</li>
-                        <li class="nav-item has-treeview">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fa-solid fa-users"></i>
-                                <p>
-                                    Người Dùng
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ route('users.index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Danh Sách</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('users.create') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Thêm Mới</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
+                        @if(auth()->user()->role == "admin")
+                            <li class="nav-item has-treeview">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fa-solid fa-users"></i>
+                                    <p>
+                                        Người Dùng
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="{{ route('users.index') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Danh Sách</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ route('users.create') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Thêm Mới</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        @endif
                         <li class="nav-item has-treeview">
                             <a href="{{ route('users.profile') }}" class="nav-link">
                                 <i class="nav-icon fa-solid fa-lock"></i>

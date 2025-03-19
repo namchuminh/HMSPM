@@ -56,7 +56,9 @@
                                 <th>Đang Cho Mượn</th>
                                 <th>Hết Hạn</th>
                                 <th>Hư Hỏng</th>
-                                <th>Hành động</th>
+                                @if(auth()->user()->role == "admin")
+                                    <th>Hành động</th>
+                                @endif
                             </tr>
                         </thead>
                         <tbody>
@@ -77,14 +79,16 @@
                                     <td>
                                         <span class="badge badge-secondary">{{ $product->damaged_quantity . ' sản phẩm' ?? '0 sản phẩm' }}</span>
                                     </td>
-                                    <td>
-                                        <a href="{{ route('products.edit', $product->id) }}" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i> Sửa</a>
-                                        <form action="{{ route('products.destroy', $product->id) }}" method="POST" style="display:inline;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger" onclick="return confirm('Xóa sản phẩm này?')"><i class="fa-solid fa-trash"></i> Xóa</button>
-                                        </form>
-                                    </td>
+                                    @if(auth()->user()->role == "admin")
+                                        <td>
+                                            <a href="{{ route('products.edit', $product->id) }}" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i> Sửa</a>
+                                            <form action="{{ route('products.destroy', $product->id) }}" method="POST" style="display:inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger" onclick="return confirm('Xóa sản phẩm này?')"><i class="fa-solid fa-trash"></i> Xóa</button>
+                                            </form>
+                                        </td>
+                                    @endif
                                 </tr>
                             @endforeach
                         </tbody>
